@@ -20,7 +20,8 @@ var tables = [
      name: "",
      email: "",
      phoneNumber: "",
-     uniqueId: ""
+     uniqueId: "",
+     reserved: false
    },
 ];
 
@@ -42,8 +43,12 @@ app.get("/", function(req, res) {
  });
 
  app.get("/currentreservations", function(req, res) {
-     console.log(currentreservations);
-   res.json(currentreservations);
+
+     //console.log(currentreservations);
+   //res.json(currentreservations);  
+   res.json({
+    currentreservations: currentreservations,
+    waitinglist: waitinglist
  });
 
  app.get("/reservations", function(req, res) {
@@ -59,10 +64,18 @@ app.post("/reservations", function(req, res) {
    console.log(newreservation);
 
    if(currentreservations.length < 5) 
-   currentreservations.push(newreservation);
-   else
+
+   {
+    newreservation.reserved = true;
+     currentreservations.push(newreservation);
+   }
+   else{
+    newreservation.reserved = false;
    waitinglist.push(newreservation);
+   }
  
+   res.json(newreservation);
+
  });
  // Starts the server to begin listening
 
