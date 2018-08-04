@@ -62,7 +62,7 @@
     </div>
     
   <script type="text/javascript">
-      // Question: What does this code do?
+      
       $("#submit").on("click", function(event) {
         event.preventDefault();
         var newReservation = {
@@ -71,7 +71,7 @@
           email: $("#email").val().trim(),
           uniqueid: $("#uniqueid").val().trim()
         };
-        // Question: What does this code do??
+      
         $.post("/api/reserve", newReservation)
         .done(function(data) {
           if (data.reserved){
