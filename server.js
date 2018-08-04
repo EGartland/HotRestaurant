@@ -16,13 +16,16 @@ app.use(bodyParser.json());
 // Setup variables here
 //===============================================================
 var tables = [
-    {
-      name: "",
-      email: "",
-      phoneNumber: "",
-      uniqueId: ""
-    },
+   {
+     name: "",
+     email: "",
+     phoneNumber: "",
+     uniqueId: ""
+   },
 ];
+
+var currentreservations = [];
+var waitinglist = [];
 //===============================================================
 
 // Routes
@@ -30,35 +33,40 @@ var tables = [
 
 // Basic route that sends the user first to the AJAX Page
 app.get("/", function(req, res) {
-    res.sendFile(path.join(__dirname, "home.html"));
-  });
-  
-  app.get("/tables", function(req, res) {
-    res.sendFile(path.join(__dirname, "tables.html"));
-  });
+   res.sendFile(path.join(__dirname, "home.html"));
+ });
+ 
+ app.get("/tables", function(req, res) {
+    console.log(currentreservations);
+   res.sendFile(path.join(__dirname, "tables.html"));
+ });
 
-  app.get("/gettables", function(req, res) {
-    res.json(tables);
-  });
+ app.get("/currentreservations", function(req, res) {
+     console.log(currentreservations);
+   res.json(currentreservations);
+ });
 
-  app.get("/reservations", function(req, res) {
-    res.sendFile(path.join(__dirname, "reservations.html"));
-  });
-  
-  // Create New Characters - takes in JSON input
+ app.get("/reservations", function(req, res) {
+   res.sendFile(path.join(__dirname, "reservations.html"));
+ });
+ 
+ // Create New Characters - takes in JSON input
 app.post("/reservations", function(req, res) {
-    // req.body hosts is equal to the JSON post sent from the user
-    // This works because of our body-parser middleware
-    var newreservation = req.body;
-  
-    console.log(newreservation);
-  
-    characters.push(newreservation);
-  
-  });
-  // Starts the server to begin listening
+   // req.body hosts is equal to the JSON post sent from the user
+   // This works because of our body-parser middleware
+   var newreservation = req.body;
+ 
+   console.log(newreservation);
 
-  // =============================================================
+   if(currentreservations.length < 5) 
+   currentreservations.push(newreservation);
+   else
+   waitinglist.push(newreservation);
+ 
+ });
+ // Starts the server to begin listening
+
+ // =============================================================
 app.listen(PORT, function() {
-    console.log("App listening on PORT " + PORT);
-  });
+   console.log("App listening on PORT " + PORT);
+ });
